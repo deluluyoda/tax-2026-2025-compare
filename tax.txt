@@ -1,0 +1,10 @@
+yesterday greek primeminster announced tax rate cutrs of 2026.
+please make an online calculator so that the user enters his yearly or montly net payslip and a deduction for 2026 will be caclulated
+net payslip is the ammount that the user gets to see in his bank. the taxable amount is the ammount on which helath care reductions
+are already applied (we dont care about them) and the tax is applied. the idea is to keep the same taxable ammount for 2026 in our calc to see the saving.
+the number of childen also play part in the calc
+
+new rates can be found here
+https://www.e-forologia.gr/cms/viewContents.aspx?id=236702
+
+create a standalone html page

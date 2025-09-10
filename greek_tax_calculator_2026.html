@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Υπολογιστής Φόρων Ελλάδα 2026 - Σύγκριση Εξοικονομήσεων 2025 vs 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .results {
+            margin-top: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            margin: 15px -25px -25px -25px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .result-label {
+            color: #2c3e50;
+        }
+
+        .result-value {
+            font-weight: 600;
+        }
+
+        .savings {
+            color: #27ae60;
+            font-size: 1.2em;
+        }
+
+        .age-group {
+            margin-bottom: 20px;
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .year-2025 {
+            color: #e74c3c;
+        }
+
+        .year-2026 {
+            color: #27ae60;
+        }
+
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .lang-selector select {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .lang-selector select option {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .source-link {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .source-link a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .source-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="lang-selector">
+                <select id="langSelector" onchange="switchLanguage()">
+                    <option value="el">🇬🇷 Ελληνικά</option>
+                    <option value="en">🇬🇧 English</option>
+                </select>
+            </div>
+            <h1 data-en="🇬🇷 Greek Tax Calculator 2026" data-el="🇬🇷 Υπολογιστής Φόρων 2026">🇬🇷 Υπολογιστής Φόρων 2026</h1>
+            <p data-en="Compare your tax savings with the new 2026 rates" data-el="Συγκρίνετε τις φορολογικές σας εξοικονομήσεις με τους νέους συντελεστές του 2026">Συγκρίνετε τις φορολογικές σας εξοικονομήσεις με τους νέους συντελεστές του 2026</p>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="incomeType" data-en="Income Type:" data-el="Τύπος Εισοδήματος:">Τύπος Εισοδήματος:</label>
+                    <select id="incomeType" onchange="updateIncomeLabel()">
+                        <option value="gross" data-en="Gross Income (before insurance)" data-el="Μεικτό Εισόδημα (πριν τις ασφαλιστικές εισφορές)">Μεικτό Εισόδημα (πριν τις ασφαλιστικές εισφορές)</option>
+                        <option value="net" data-en="Net Income (final ammount payed)" data-el="Καθαρό Εισόδημα (τελικό ποσό πληρωμής στην τράπεζα)">Καθαρό Εισόδημα (τελικό ποσό πληρωμής στην τράπεζα)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="payslipType" data-en="Payslip Type:" data-el="Είδος Μισθοδοσίας:">Είδος Μισθοδοσίας:</label>
+                    <select id="payslipType" onchange="updateWagesDropdown()">
+                        <option value="yearly" data-en="Yearly" data-el="Ετήσιος">Ετήσιος</option>
+                        <option value="monthly" data-en="Monthly" data-el="Μηνιαίος">Μηνιαίος</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="payslip" id="payslipLabel" data-en="Gross Payslip (€):" data-el="Μεικτός Μισθός (€):">Μεικτός Μισθός (€):</label>
+                    <input type="number" id="payslip" data-placeholder-en="Enter your gross payslip" data-placeholder-el="Εισάγετε τον μεικτό σας μισθό" placeholder="Εισάγετε τον μεικτό σας μισθό" min="0" step="0.01">
+                </div>
+
+                <div class="input-group" id="wagesGroup" style="display: none;">
+                    <label for="wages" data-en="Number of Wages per Year:" data-el="Αριθμός Μισθών ανά Έτος:">Αριθμός Μισθών ανά Έτος:</label>
+                    <select id="wages">
+                        <option value="12" data-en="12 wages" data-el="12 μισθοί">12 μισθοί</option>
+                        <option value="13" data-en="13 wages" data-el="13 μισθοί">13 μισθοί</option>
+                        <option value="14" selected data-en="14 wages (standard)" data-el="14 μισθοί (κανονικό)">14 μισθοί (κανονικό)</option>
+                        <option value="15" data-en="15 wages" data-el="15 μισθοί">15 μισθοί</option>
+                        <option value="16" data-en="16 wages" data-el="16 μισθοί">16 μισθοί</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="age" data-en="Age:" data-el="Ηλικία:">Ηλικία:</label>
+                    <input type="number" id="age" data-placeholder-en="Enter your age" data-placeholder-el="Εισάγετε την ηλικία σας" placeholder="Εισάγετε την ηλικία σας" min="18" max="100" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="children" data-en="Number of Dependent Children:" data-el="Αριθμός Εξαρτώμενων Τέκνων:">Αριθμός Εξαρτώμενων Τέκνων:</label>
+                    <select id="children">
+                        <option value="0" data-en="0 children" data-el="0 παιδιά">0 παιδιά</option>
+                        <option value="1" data-en="1 child" data-el="1 παιδί">1 παιδί</option>
+                        <option value="2" data-en="2 children" data-el="2 παιδιά">2 παιδιά</option>
+                        <option value="3" data-en="3 children" data-el="3 παιδιά">3 παιδιά</option>
+                        <option value="4" data-en="4+ children" data-el="4+ παιδιά">4+ παιδιά</option>
+                    </select>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateTax()" data-en="Calculate Tax Comparison" data-el="Υπολογισμός Σύγκρισης Φόρων">Υπολογισμός Σύγκρισης Φόρων</button>
+            </div>
+
+            <div id="results" class="results" style="display: none;">
+                <h3 data-en="Tax Comparison Results" data-el="Αποτελέσματα Σύγκρισης Φόρων">Αποτελέσματα Σύγκρισης Φόρων</h3>
+                <div id="resultsContent"></div>
+            </div>
+
+            <div class="source-link">
+                <p><span data-en="Source: Tax rates based on official announcements from" data-el="Πηγή: Οι φορολογικοί συντελεστές βασίζονται σε επίσημες ανακοινώσεις από">Πηγή: Οι φορολογικοί συντελεστές βασίζονται σε επίσημες ανακοινώσεις από</span>
+                <a href="https://www.e-forologia.gr/cms/viewContents.aspx?id=236702" target="_blank" data-en="E-Forologia.gr - Greek Tax Portal" data-el="E-Forologia.gr - Ελληνική Φορολογική Πύλη">E-Forologia.gr - Ελληνική Φορολογική Πύλη</a></p>
+            </div>
+
+            <div class="note">
+                <strong data-en="Note:" data-el="Σημείωση:">Σημείωση:</strong>
+                <span data-en="This calculator estimates your tax savings based on the announced 2026 tax rate changes. The calculation assumes the same taxable income for both years to show pure savings from rate changes. Actual taxes may vary based on other deductions and specific circumstances." data-el="Αυτός ο υπολογιστής εκτιμά τις φορολογικές σας εξοικονομήσεις με βάση τις ανακοινωθείσες αλλαγές των φορολογικών συντελεστών του 2026. Ο υπολογισμός υποθέτει το ίδιο φορολογητέο εισόδημα και για τα δύο έτη για να δείξει καθαρές εξοικονομήσεις από τις αλλαγές των συντελεστών. Οι πραγματικοί φόροι μπορεί να διαφέρουν ανάλογα με άλλες εκπτώσεις και συγκεκριμένες περιστάσεις.">Αυτός ο υπολογιστής εκτιμά τις φορολογικές σας εξοικονομήσεις με βάση τις ανακοινωθείσες αλλαγές των φορολογικών συντελεστών του 2026. Ο υπολογισμός υποθέτει το ίδιο φορολογητέο εισόδημα και για τα δύο έτη για να δείξει καθαρές εξοικονομήσεις από τις αλλαγές των συντελεστών. Οι πραγματικοί φόροι μπορεί να διαφέρουν ανάλογα με άλλες εκπτώσεις και συγκεκριμένες περιστάσεις.</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'el';
+
+        // Translation object
+        const translations = {
+            results: {
+                en: {
+                    taxableIncome: 'Estimated Taxable Income:',
+                    incomeTax: 'Income Tax',
+                    childCredits: 'Child Tax Credits',
+                    finalTax: 'Final Tax After Credits',
+                    annualSavings: '💰 Annual Tax Savings:',
+                    monthlySavings: '📅 Monthly Tax Savings:',
+                    basedOnWages: 'based on {wages} wages/year',
+                    taxRatesUsed: 'Tax Rates Used in Calculations',
+                    incomeBracket: 'Income Bracket',
+                    year2025: '2025 (Current)',
+                    year2026: '2026 (New)',
+                    childTaxCredit: 'Child Tax Credit:',
+                    beforeAdjustments: 'before income adjustments',
+                    ageYoung: 'Age ≤25',
+                    ageMiddle: 'Age 26-30',
+                    children: 'children'
+                },
+                el: {
+                    taxableIncome: 'Εκτιμώμενο Φορολογητέο Εισόδημα:',
+                    incomeTax: 'Φόρος Εισοδήματος',
+                    childCredits: 'Φοροαπαλλαγές για Παιδιά',
+                    finalTax: 'Τελικός Φόρος μετά τις Απαλλαγές',
+                    annualSavings: '💰 Ετήσια Φορολογική Εξοικονόμηση:',
+                    monthlySavings: '📅 Μηνιαία Φορολογική Εξοικονόμηση:',
+                    basedOnWages: 'βασισμένο σε {wages} μισθούς/έτος',
+                    taxRatesUsed: 'Φορολογικοί Συντελεστές που Χρησιμοποιήθηκαν',
+                    incomeBracket: 'Εισοδηματικό Κλιμάκιο',
+                    year2025: '2025 (Τρέχον)',
+                    year2026: '2026 (Νέο)',
+                    childTaxCredit: 'Φοροαπαλλαγή για Παιδιά:',
+                    beforeAdjustments: 'πριν τις προσαρμογές εισοδήματος',
+                    ageYoung: 'Ηλικία ≤25',
+                    ageMiddle: 'Ηλικία 26-30',
+                    children: 'παιδιά'
+                }
+            },
+            alerts: {
+                en: {
+                    invalidPayslip: 'Please enter a valid payslip amount',
+                    invalidAge: 'Please enter a valid age (18 or older)'
+                },
+                el: {
+                    invalidPayslip: 'Παρακαλώ εισάγετε έγκυρο ποσό μισθοδοσίας',
+                    invalidAge: 'Παρακαλώ εισάγετε έγκυρη ηλικία (18 ετών ή μεγαλύτερη)'
+                }
+            }
+        };
+
+        function switchLanguage() {
+            currentLang = document.getElementById('langSelector').value;
+
+            // Update all elements with data-en and data-el attributes
+            document.querySelectorAll('[data-en]').forEach(element => {
+                if (element.tagName === 'INPUT' && element.hasAttribute('data-placeholder-en')) {
+                    element.placeholder = element.getAttribute('data-placeholder-' + currentLang);
+                } else {
+                    element.textContent = element.getAttribute('data-' + currentLang);
+                }
+            });
+
+            // Update select options
+            document.querySelectorAll('select option[data-en]').forEach(option => {
+                option.textContent = option.getAttribute('data-' + currentLang);
+            });
+
+            // Update HTML lang attribute
+            document.documentElement.lang = currentLang === 'el' ? 'el' : 'en';
+
+            // Update page title
+            if (currentLang === 'el') {
+                document.title = 'Υπολογιστής Φόρων Ελλάδα 2026 - Σύγκριση Εξοικονομήσεων 2025 vs 2026';
+            } else {
+                document.title = 'Greek Tax Calculator 2026 - Compare 2025 vs 2026 Savings';
+            }
+        }
+
+        function updateWagesDropdown() {
+            const payslipType = document.getElementById('payslipType').value;
+            const wagesGroup = document.getElementById('wagesGroup');
+
+            if (payslipType === 'monthly') {
+                wagesGroup.style.display = 'block';
+            } else {
+                wagesGroup.style.display = 'none';
+            }
+        }
+
+        function updateIncomeLabel() {
+            const incomeType = document.getElementById('incomeType').value;
+            const payslipLabel = document.getElementById('payslipLabel');
+            const payslipInput = document.getElementById('payslip');
+
+            if (incomeType === 'gross') {
+                payslipLabel.setAttribute('data-en', 'Gross Payslip (€):');
+                payslipLabel.setAttribute('data-el', 'Μεικτός Μισθός (€):');
+                payslipInput.setAttribute('data-placeholder-en', 'Enter your gross payslip');
+                payslipInput.setAttribute('data-placeholder-el', 'Εισάγετε τον μεικτό σας μισθό');
+            } else {
+                payslipLabel.setAttribute('data-en', 'Net Payslip (€):');
+                payslipLabel.setAttribute('data-el', 'Καθαρός Μισθός (€):');
+                payslipInput.setAttribute('data-placeholder-en', 'Enter your net payslip');
+                payslipInput.setAttribute('data-placeholder-el', 'Εισάγετε τον καθαρό σας μισθό');
+            }
+
+            // Update the display based on current language
+            payslipLabel.textContent = payslipLabel.getAttribute('data-' + currentLang);
+            payslipInput.placeholder = payslipInput.getAttribute('data-placeholder-' + currentLang);
+        }
+
+        // Initialize wages dropdown visibility and income label
+        window.onload = function() {
+            updateWagesDropdown();
+            updateIncomeLabel();
+        };
+
+        function calculateTax() {
+            const payslipInput = parseFloat(document.getElementById('payslip').value);
+            const incomeType = document.getElementById('incomeType').value;
+            const payslipType = document.getElementById('payslipType').value;
+            const wages = parseInt(document.getElementById('wages').value) || 14;
+            const age = parseInt(document.getElementById('age').value);
+            const children = parseInt(document.getElementById('children').value);
+
+            if (!payslipInput || payslipInput <= 0) {
+                alert(translations.alerts[currentLang].invalidPayslip);
+                return;
+            }
+
+            if (!age || age < 18) {
+                alert(translations.alerts[currentLang].invalidAge);
+                return;
+            }
+
+            // Calculate yearly income
+            let yearlyPayslip = payslipType === 'monthly' ? payslipInput * wages : payslipInput;
+
+            // Calculate taxable income based on income type
+            let estimatedTaxableIncome;
+            if (incomeType === 'gross') {
+                // For gross income, apply 13.37% health insurance deduction to get taxable income
+                estimatedTaxableIncome = yearlyPayslip * (1 - 0.1337);
+            } else {
+                // For net income, reverse calculate to get taxable income
+                // Assuming approximately 25-30% total deductions (tax + social security)
+                estimatedTaxableIncome = yearlyPayslip / 0.72; // Approximate reverse calculation
+            }
+
+            // 2025 Tax Rates (Current)
+            const tax2025 = calculateTax2025(estimatedTaxableIncome, age, children);
+
+            // 2026 Tax Rates (New)
+            const tax2026 = calculateTax2026(estimatedTaxableIncome, age, children);
+
+            // Calculate savings
+            const savings = tax2025.totalTax - tax2026.totalTax;
+            const savingsPercentage = (savings / tax2025.totalTax * 100);
+            const monthlySavings = savings / wages;
+
+            displayResults(estimatedTaxableIncome, tax2025, tax2026, savings, savingsPercentage, monthlySavings, wages, age, children);
+        }
+
+        function calculateTax2025(taxableIncome, age, children) {
+            let tax = 0;
+            let breakdown = [];
+
+            // Current 2025 tax brackets
+            if (taxableIncome > 0) {
+                const bracket1 = Math.min(taxableIncome, 10000);
+                tax += bracket1 * 0.09;
+                breakdown.push({bracket: '€0 - €10,000', rate: '9%', amount: bracket1 * 0.09});
+            }
+
+            if (taxableIncome > 10000) {
+                const bracket2 = Math.min(taxableIncome - 10000, 10000);
+                tax += bracket2 * 0.22;
+                breakdown.push({bracket: '€10,001 - €20,000', rate: '22%', amount: bracket2 * 0.22});
+            }
+
+            if (taxableIncome > 20000) {
+                const bracket3 = Math.min(taxableIncome - 20000, 10000);
+                tax += bracket3 * 0.28;
+                breakdown.push({bracket: '€20,001 - €30,000', rate: '28%', amount: bracket3 * 0.28});
+            }
+
+            if (taxableIncome > 30000) {
+                const bracket4 = Math.min(taxableIncome - 30000, 10000);
+                tax += bracket4 * 0.36;
+                breakdown.push({bracket: '€30,001 - €40,000', rate: '36%', amount: bracket4 * 0.36});
+            }
+
+            if (taxableIncome > 40000) {
+                const bracket5 = taxableIncome - 40000;
+                tax += bracket5 * 0.44;
+                breakdown.push({bracket: '€40,001+', rate: '44%', amount: bracket5 * 0.44});
+            }
+
+            // Apply child tax credits for 2025
+            const childCredit = getChildTaxCredit2025(children, taxableIncome);
+            tax = Math.max(0, tax - childCredit);
+
+            return {
+                totalTax: tax,
+                childCredit: childCredit,
+                breakdown: breakdown
+            };
+        }
+
+        function calculateTax2026(taxableIncome, age, children) {
+            let tax = 0;
+            let breakdown = [];
+
+            // 2026 tax brackets with age and children considerations
+            if (taxableIncome > 0) {
+                const bracket1 = Math.min(taxableIncome, 10000);
+                if (age <= 25) {
+                    // Young people up to 25: 0% tax on first 20,000€
+                    tax += 0;
+                    breakdown.push({bracket: '€0 - €10,000', rate: '0% (Age ≤25)', amount: 0});
+                } else {
+                    tax += bracket1 * 0.09;
+                    breakdown.push({bracket: '€0 - €10,000', rate: '9%', amount: bracket1 * 0.09});
+                }
+            }
+
+            if (taxableIncome > 10000) {
+                const bracket2 = Math.min(taxableIncome - 10000, 10000);
+                if (age <= 25) {
+                    // Young people up to 25: 0% tax on first 20,000€
+                    tax += 0;
+                    breakdown.push({bracket: '€10,001 - €20,000', rate: '0% (Age ≤25)', amount: 0});
+                } else if (age <= 30) {
+                    // People 26-30: 9% on 10,000-20,000€
+                    tax += bracket2 * 0.09;
+                    breakdown.push({bracket: '€10,001 - €20,000', rate: '9% (Age 26-30)', amount: bracket2 * 0.09});
+                } else {
+                    // Regular rate varies by children
+                    const rate = getTax2026Rate10to20k(children);
+                    tax += bracket2 * rate;
+                    breakdown.push({bracket: '€10,001 - €20,000', rate: `${(rate*100).toFixed(0)}%`, amount: bracket2 * rate});
+                }
+            }
+
+            if (taxableIncome > 20000) {
+                const bracket3 = Math.min(taxableIncome - 20000, 10000);
+                const rate = getTax2026Rate20to30k(children);
+                tax += bracket3 * rate;
+                breakdown.push({bracket: '€20,001 - €30,000', rate: `${(rate*100).toFixed(0)}%`, amount: bracket3 * rate});
+            }
+
+            if (taxableIncome > 30000) {
+                const bracket4 = Math.min(taxableIncome - 30000, 10000);
+                tax += bracket4 * 0.34;
+                breakdown.push({bracket: '€30,001 - €40,000', rate: '34%', amount: bracket4 * 0.34});
+            }
+
+            if (taxableIncome > 40000) {
+                const bracket5 = Math.min(taxableIncome - 40000, 20000);
+                tax += bracket5 * 0.39;
+                breakdown.push({bracket: '€40,001 - €60,000', rate: '39%', amount: bracket5 * 0.39});
+            }
+
+            if (taxableIncome > 60000) {
+                const bracket6 = taxableIncome - 60000;
+                tax += bracket6 * 0.44;
+                breakdown.push({bracket: '€60,001+', rate: '44%', amount: bracket6 * 0.44});
+            }
+
+            // Apply child tax credits for 2026 (same as 2025)
+            const childCredit = getChildTaxCredit2025(children, taxableIncome);
+            tax = Math.max(0, tax - childCredit);
+
+            return {
+                totalTax: tax,
+                childCredit: childCredit,
+                breakdown: breakdown
+            };
+        }
+
+        function getTax2026Rate10to20k(children) {
+            // Based on 2026 rates varying by number of children
+            switch(children) {
+                case 0: return 0.20;  // 20% for 0 children
+                case 1: return 0.18;  // 18% for 1 child
+                case 2: return 0.16;  // 16% for 2 children
+                case 3: return 0.14;  // 14% for 3 children
+                case 4:
+                default: return 0.12; // 12% for 4+ children
+            }
+        }
+
+        function getTax2026Rate20to30k(children) {
+            // Based on 2026 rates varying by number of children
+            switch(children) {
+                case 0: return 0.26;  // 26% for 0 children
+                case 1: return 0.24;  // 24% for 1 child
+                case 2: return 0.22;  // 22% for 2 children
+                case 3: return 0.20;  // 20% for 3 children
+                case 4:
+                default: return 0.18; // 18% for 4+ children
+            }
+        }
+
+        function getChildTaxCredit2025(children, income) {
+            // Base credit: €777 for single/married without dependents
+            let credit = 777;
+
+            // Increase credit based on number of children
+            switch(children) {
+                case 1: credit = 900; break;
+                case 2: credit = 1120; break;
+                case 3: credit = 1340; break;
+                case 4:
+                default:
+                    if (children >= 4) {
+                        credit = 1580; // 4+ children get same credit as 4 children
+                    }
+                    break;
+            }
+
+            // Reduce credit for income above €12,000 (for salary/pension income)
+            if (income > 12000) {
+                const reduction = Math.floor((income - 12000) / 1000) * 20;
+                credit = Math.max(0, credit - reduction);
+            }
+
+            return credit;
+        }
+
+        function getTaxRatesTable(age, children) {
+            const t = translations.results[currentLang];
+
+            return `
+                <h4>${t.taxRatesUsed}</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>${t.incomeBracket}</th>
+                            <th class="year-2025">${t.year2025.split('(')[0]} Rate</th>
+                            <th class="year-2026">${t.year2026.split('(')[0]} Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>€0 - €10,000</td>
+                            <td class="year-2025">9%</td>
+                            <td class="year-2026">${age <= 25 ? '0% (' + t.ageYoung + ')' : '9%'}</td>
+                        </tr>
+                        <tr>
+                            <td>€10,001 - €20,000</td>
+                            <td class="year-2025">22%</td>
+                            <td class="year-2026">${age <= 25 ? '0% (' + t.ageYoung + ')' : age <= 30 ? '9% (' + t.ageMiddle + ')' : (getTax2026Rate10to20k(children) * 100).toFixed(0) + '% (' + children + (children === 4 ? '+' : '') + ' ' + t.children + ')'}</td>
+                        </tr>
+                        <tr>
+                            <td>€20,001 - €30,000</td>
+                            <td class="year-2025">28%</td>
+                            <td class="year-2026">${(getTax2026Rate20to30k(children) * 100).toFixed(0)}% (${children}${children === 4 ? '+' : ''} ${t.children})</td>
+                        </tr>
+                        <tr>
+                            <td>€30,001 - €40,000</td>
+                            <td class="year-2025">36%</td>
+                            <td class="year-2026">34%</td>
+                        </tr>
+                        <tr>
+                            <td>€40,001 - €60,000</td>
+                            <td class="year-2025">44%</td>
+                            <td class="year-2026">39%</td>
+                        </tr>
+                        <tr>
+                            <td>€60,001+</td>
+                            <td class="year-2025">44%</td>
+                            <td class="year-2026">44%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 12px; color: #666; margin-top: 10px;">${t.childTaxCredit} €${getChildTaxCredit2025(children, 0)} (${t.beforeAdjustments}) <a href="https://taxsummaries.pwc.com/greece/individual/deductions" target="_blank" style="color: #3498db; text-decoration: none; margin-left: 5px;" title="${currentLang === 'en' ? 'Learn more about Greek tax deductions' : 'Μάθετε περισσότερα για τις ελληνικές φοροαπαλλαγές'}">ℹ️</a></p>
+            `;
+        }
+
+        function displayResults(taxableIncome, tax2025, tax2026, savings, savingsPercentage, monthlySavings, wages, age, children) {
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+            const t = translations.results[currentLang];
+
+            let html = `
+                <div class="result-row">
+                    <span class="result-label">${t.taxableIncome}</span>
+                    <span class="result-value">€${taxableIncome.toFixed(2)}</span>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th data-en="Item" data-el="Στοιχείο">Στοιχείο</th>
+                            <th class="year-2025">${t.year2025}</th>
+                            <th class="year-2026">${t.year2026}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${t.incomeTax}</td>
+                            <td class="year-2025">€${(tax2025.totalTax + tax2025.childCredit).toFixed(2)}</td>
+                            <td class="year-2026">€${(tax2026.totalTax + tax2026.childCredit).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>${t.childCredits}</td>
+                            <td class="year-2025">-€${tax2025.childCredit.toFixed(2)}</td>
+                            <td class="year-2026">-€${tax2026.childCredit.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>${t.finalTax}</strong></td>
+                            <td class="year-2025"><strong>€${tax2025.totalTax.toFixed(2)}</strong></td>
+                            <td class="year-2026"><strong>€${tax2026.totalTax.toFixed(2)}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="result-row">
+                    <span class="result-label">${t.annualSavings}</span>
+                    <span class="result-value savings">€${savings.toFixed(2)} (${savingsPercentage.toFixed(1)}%)</span>
+                </div>
+
+                <div class="result-row">
+                    <span class="result-label">${t.monthlySavings}</span>
+                    <span class="result-value savings">€${monthlySavings.toFixed(2)} (${t.basedOnWages.replace('{wages}', wages)})</span>
+                </div>
+
+                ${getTaxRatesTable(age, children)}
+            `;
+
+            resultsContent.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
