@@ -32,7 +32,7 @@ The challenge was real: I needed a calculator that could handle complex Greek ta
 ## The Development Timeline: A Prompt-by-Prompt Journey
 
 ### Phase 1: Initial Concept (Prompt 1)
-**My Input:** 
+**My Input:**
 ```
 read @tax.txt
 ```
@@ -72,14 +72,14 @@ create a standalone html page
 - Created comparison tables showing 2025 vs 2026 rates
 - Added responsive design with professional styling
 
-**Technical Achievement:** 
+**Technical Achievement:**
 - ~500 lines of production-ready code
 - Complex mathematical calculations
 - Professional UI/UX design
 - No bugs or syntax errors on first generation
 
 ### Phase 3: Greek Payroll System Integration (Prompt 2)
-**My Input:** 
+**My Input:**
 ```
 nice, if the user select monthly net income the default is 14 wages, make a dropdown with this as the default. also in the dropdown of children dont use more options than nessesary (ie stop when the number of children dont affect the output ,ie 4+)
 ```
@@ -93,7 +93,7 @@ nice, if the user select monthly net income the default is 14 wages, make a drop
 **Technical Achievement:** The AI demonstrated domain knowledge of Greek labor practices without being explicitly taught about the 14-wage system (including holiday bonuses).
 
 ### Phase 4: Enhanced Analytics (Prompt 3)
-**My Input:** 
+**My Input:**
 ```
 add a monthly tax savings output as well as the yearly ( take into account the number of wages) also add a table to show the tax rates used in your calcs
 ```
@@ -107,7 +107,7 @@ add a monthly tax savings output as well as the yearly ( take into account the n
 **Technical Achievement:** Added complex financial analytics while maintaining code organization and performance.
 
 ### Phase 5: Localization & Source Attribution (Prompt 4)
-**My Input:** 
+**My Input:**
 ```
 add a link to the source, make the ui also in greek with a lang selector
 ```
@@ -122,7 +122,7 @@ add a link to the source, make the ui also in greek with a lang selector
 **Technical Achievement:** Full i18n implementation with proper translation management and cultural localization.
 
 ### Phase 6: Tax Rate Corrections (Prompt 5)
-**My Input:** 
+**My Input:**
 ```
 there is an error on the tax dedecutions in 2026 , they are off by some % . example: with zero childs, the 10000.01 - 20000.01 bracket must be 20% but in your output is 18%...
 ```
@@ -132,7 +132,7 @@ there is an error on the tax dedecutions in 2026 , they are off by some % . exam
 **Technical Achievement:** Bug identification, acknowledgment, and precise correction without breaking existing functionality.
 
 ### Phase 7: Documentation Enhancement (Prompt 6)
-**My Input:** 
+**My Input:**
 ```
 can you add a link next to that to a website that exaplins this ?
 ```
@@ -142,7 +142,7 @@ can you add a link next to that to a website that exaplins this ?
 **Technical Achievement:** Autonomous research and integration of authoritative external resources.
 
 ### Phase 8: Meta-Documentation (Final Prompt)
-**My Input:** 
+**My Input:**
 ```
 add the content of the @tax.txt file that was my intial prompt. finally do an "ls -lat tax.txt greek_tax_calculator_2026.html vibe_coding_article.md" to prove the 90 min claims. add this very prompt too to the article and mentioned that the article creation itself is also part of the experiement, not a single word was edited.
 ```
@@ -159,7 +159,7 @@ $ ls -lat tax.txt greek_tax_calculator_2026.html vibe_coding_article.md
 
 **The Timeline Proof:**
 - **23:05** - Initial requirements file created (tax.txt)
-- **00:00** - Calculator completed (greek_tax_calculator_2026.html) 
+- **00:00** - Calculator completed (greek_tax_calculator_2026.html)
 - **00:07** - Article finished (vibe_coding_article.md)
 
 **Total Development Time: 55 minutes** (even faster than estimated!)
@@ -289,6 +289,10 @@ The question isn't whether AI will change how we build software—it already has
 ---
 
 *The complete Greek tax calculator built in this experiment is available as a single HTML file, fully functional and ready to use. No frameworks, no build process, no deployment complexity—just pure vibe-coded excellence.*
+
+[Github Project page](https://github.com/deluluyoda/tax-2026-2025-compare)
+
+[Tax Calculator as a standalone html Webpage](https://tax2026.3141000.xyz/)
 
 **Technical Specs:**
 - Single HTML file: ~800 lines
